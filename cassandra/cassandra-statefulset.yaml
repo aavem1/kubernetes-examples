@@ -18,7 +18,7 @@ spec:
       terminationGracePeriodSeconds: 1800
       containers:
       - name: cassandra
-        image: gcr.io/google-samples/cassandra:v14
+        image: aledbf/cassandra:v15
         imagePullPolicy: Always
         ports:
         - containerPort: 7000
@@ -80,6 +80,7 @@ spec:
         volumeMounts:
         - name: cassandra-data
           mountPath: /var/lib/cassandra
+          # subPath: $(POD_NAME)
   # These are converted to volume claims by the controller
   # and mounted at the paths mentioned above.
   # do not use these in production until ssd GCEPersistentDisk or other ssd pd
@@ -89,7 +90,7 @@ spec:
       annotations:
         volume.beta.kubernetes.io/storage-class: fast
     spec:
-      accessModes: [ "ReadWriteOnce" ]
+      accessModes: [ "ReadWriteMany" ]
       resources:
         requests:
           storage: 1Gi
